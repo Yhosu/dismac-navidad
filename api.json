@@ -1,0 +1,574 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Promo Whirlpool API Docs",
+        "version": "0.0.1",
+        "description": "Documentaci\u00f3n oficial de la API REST para la promoci\u00f3n WHIRLPOOL SPECIAL DAYS."
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api"
+        }
+    ],
+    "security": [
+        {
+            "apiKey": []
+        }
+    ],
+    "paths": {
+        "/register-participant": {
+            "post": {
+                "operationId": "registerParticipant",
+                "description": "Registra un nuevo participante y su compra para la promoci\u00f3n **DISMAC NAVIDAD**, determinando la esfera correspondiente seg\u00fan el monto total de la compra, el l\u00edmite diario por c\u00e9dula de identidad y el canal (`ECO` vs f\u00edsico/POS).\n\n### Reglas de Participaci\u00f3n y Esferas:\n- **L\u00edmite diario**: M\u00e1ximo **1 participaci\u00f3n v\u00e1lida por d\u00eda** por c\u00e9dula de identidad (`ci_number`).\n- **Monto m\u00ednimo**: Compras menores a `Bs. 1.500` no generan participaci\u00f3n (`total_attempts = 0`).\n- **Esfera Roja (`T1`)**: Compras de `Bs. 1.500` a `2.999` (vales posibles de `Bs. 50` y `100`).\n- **Esfera Plateada (`T2`)**: Compras de `Bs. 3.000` a `5.499` (vales posibles de `Bs. 100`, `200` y `500`).\n- **Esfera Dorada (`T3`)**: Compras desde `Bs. 5.500` (vales posibles de `Bs. 200` a `10.000`).\n\n### Comportamiento por Canal (`business_unit`):\n- **Ecommerce (`ECO`)**: El sistema asigna autom\u00e1ticamente un premio con stock disponible en la sucursal Ecommerce dentro del rango de la esfera, descuenta el inventario y `message_promotion` indica el color de esfera ganado y que el cliente debe **reventar su globo virtual** en `participant_link`.\n- **F\u00edsico / POS (`RET`, `ACE`, etc.)**: No se asigna premio autom\u00e1ticamente en el registro; `message_promotion` indica el color de esfera ganado y que el cliente debe acercarse al **punto de canje f\u00edsico (POS)** en sucursal donde el operador asignar\u00e1 y entregar\u00e1 el premio desde el sistema.\n\n### Explicaci\u00f3n de los campos devueltos en `data`:\n- `total_attempts` *(int)*: **Cantidad de participaciones generadas** en el registro (`1` si califica y no particip\u00f3 hoy, `0` si no alcanza el monto m\u00ednimo o ya particip\u00f3 hoy).\n- `sphere_color` *(string|null)*: Color de la esfera ganada (`\"Roja\"`, `\"Plateada\"`, `\"Dorada\"` o `null` si no gener\u00f3 intento).\n- `sphere_tier` *(string|null)*: Nivel de la esfera (`\"T1\"`, `\"T2\"`, `\"T3\"` o `null`).\n- `is_ecommerce` *(bool)*: Indica si la compra pertenece al canal Ecommerce (`business_unit === 'ECO'`).\n- `message_promotion` *(string)*: **Mensaje din\u00e1mico informativo** con el color de esfera ganado y la instrucci\u00f3n correspondiente (reventar globo virtual en Ecommerce o acercarse al POS f\u00edsico).\n- `generate_participant_code` *(string)*: Identificador \u00fanico (UUID) del participante registrado.\n- `participant_link` *(string)*: URL p\u00fablica directa (`/participate/{ci}`) para que el usuario Ecommerce reviente su globo virtual.\n- `participant_name` *(string)*: Nombre completo del cliente registrado.\n- `participant_email` *(string|null)*: Correo electr\u00f3nico registrado.\n- `participant_ci` *(string)*: Carnet de identidad o documento de identidad del participante.",
+                "summary": "Registrar Participante",
+                "tags": [
+                    "App"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterParticipantRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Participante registrado con \u00e9xito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "examples": [
+                                        {
+                                            "process": true,
+                                            "message": "Participante registrado con \u00e9xito.",
+                                            "data": {
+                                                "generate_participant_code": "b7e28938-1a52-4f1e-9276-32454a867b32",
+                                                "participant_link": "https://promociones.dismac.com.bo/participate/12345678",
+                                                "participant_name": "Juan P\u00e9rez",
+                                                "participant_email": "juan.perez@example.com",
+                                                "participant_ci": "12345678",
+                                                "total_attempts": 1,
+                                                "sphere_color": "Plateada",
+                                                "sphere_tier": "T2",
+                                                "is_ecommerce": true,
+                                                "message_promotion": "\u00a1Felicidades! Ganaste una Esfera Plateada (T2) en la promoci\u00f3n Dismac Navidad. Debes reventar tu globo virtual en el siguiente enlace para descubrir tu premio."
+                                            },
+                                            "errors": []
+                                        },
+                                        {
+                                            "process": true,
+                                            "message": "Participante registrado con \u00e9xito.",
+                                            "data": {
+                                                "generate_participant_code": "b7e28938-1a52-4f1e-9276-32454a867b32",
+                                                "participant_link": "https://promociones.dismac.com.bo/participate/12345678",
+                                                "participant_name": "Juan P\u00e9rez",
+                                                "participant_email": "juan.perez@example.com",
+                                                "participant_ci": "12345678",
+                                                "total_attempts": 1,
+                                                "sphere_color": "Roja",
+                                                "sphere_tier": "T1",
+                                                "is_ecommerce": false,
+                                                "message_promotion": "\u00a1Felicidades! Ganaste una Esfera Roja (T1) en la promoci\u00f3n Dismac Navidad. Ac\u00e9rcate al punto de canje f\u00edsico (POS) en sucursal para reclamar tu premio."
+                                            },
+                                            "errors": []
+                                        }
+                                    ],
+                                    "properties": {
+                                        "process": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "generate_participant_code": {
+                                                    "type": "string",
+                                                    "description": "Identificador \u00fanico (UUID) asignado al participante registrado."
+                                                },
+                                                "participant_link": {
+                                                    "type": "string",
+                                                    "description": "Enlace web directo para que el participante ingrese a la ruleta/lavadora con su carnet."
+                                                },
+                                                "participant_name": {
+                                                    "type": "string",
+                                                    "description": "Nombre completo del participante registrado."
+                                                },
+                                                "participant_email": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Correo electr\u00f3nico del participante (puede ser null)."
+                                                },
+                                                "participant_ci": {
+                                                    "type": "string",
+                                                    "description": "Carnet o documento de identidad del participante."
+                                                },
+                                                "total_attempts": {
+                                                    "type": "integer",
+                                                    "description": "\ud83d\udfe2 [NUEVO] Cantidad de giros/intentos disponibles en la promoci\u00f3n Whirlpool (formularios en estado \"registered\")."
+                                                },
+                                                "sphere_color": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "sphere_tier": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "is_ecommerce": {
+                                                    "type": "boolean"
+                                                },
+                                                "message_promotion": {
+                                                    "type": "string",
+                                                    "description": "\ud83d\udfe2 [NUEVO] Mensaje promocional din\u00e1mico informativo indicando la cantidad de intentos generados o disponibles."
+                                                }
+                                            },
+                                            "required": [
+                                                "generate_participant_code",
+                                                "participant_link",
+                                                "participant_name",
+                                                "participant_email",
+                                                "participant_ci",
+                                                "total_attempts",
+                                                "sphere_color",
+                                                "sphere_tier",
+                                                "is_ecommerce",
+                                                "message_promotion"
+                                            ]
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "process",
+                                        "message",
+                                        "data",
+                                        "errors"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validaci\u00f3n de campos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "examples": [
+                                        {
+                                            "process": false,
+                                            "message": "Error en el env\u00edo de par\u00e1metros",
+                                            "errors": [
+                                                "El carnet de identidad es obligatorio.",
+                                                "La ciudad es obligatoria"
+                                            ],
+                                            "data": []
+                                        }
+                                    ],
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Errors overview."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "description": "A detailed description of each field that failed validation.",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "errors"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en los par\u00e1metros o participante no permitido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "examples": [
+                                        {
+                                            "process": false,
+                                            "message": "Error al crear el participante",
+                                            "errors": [
+                                                "Este participante no puede participar de esta promoci\u00f3n."
+                                            ],
+                                            "data": []
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "API Key inv\u00e1lida",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "examples": [
+                                        {
+                                            "message": "Unauthorized: Invalid or missing API Key"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/participant/{ciNumber}": {
+            "get": {
+                "operationId": "getDataParticipant",
+                "description": "Consulta el estado actual de un participante mediante su CI/documento y devuelve sus datos junto con las participaciones disponibles en la promoci\u00f3n **DISMAC NAVIDAD**.\n\n### Explicaci\u00f3n de los campos devueltos en `data`:\n- `total_attempts` *(int)*: **Cantidad de participaciones disponibles y vigentes** en estado `registered`.\n- `sphere_color` *(string|null)*: Color de la esfera del \u00faltimo formulario registrado (`\"Roja\"`, `\"Plateada\"`, `\"Dorada\"` o `null`).\n- `sphere_tier` *(string|null)*: Nivel de la esfera (`\"T1\"`, `\"T2\"`, `\"T3\"` o `null`).\n- `is_ecommerce` *(bool)*: Indica si la participaci\u00f3n vigente corresponde al canal Ecommerce (`ECO`).\n- `message_promotion` *(string)*: **Mensaje de estado para el cliente**:\n  - Si tiene participaci\u00f3n vigente Ecommerce: indica el color de esfera ganado y que debe reventar su globo virtual.\n  - Si tiene participaci\u00f3n vigente en tienda f\u00edsica: indica el color de esfera ganado y que debe acercarse al punto de canje f\u00edsico (POS).\n  - Sin intentos disponibles (`0`): *\"No cuenta con intentos disponibles en este momento.\"*\n- `generate_participant_code` *(string)*: Identificador \u00fanico (UUID) del participante.\n- `participant_link` *(string)*: URL directa (`/participate/{ci}`) para reventar el globo virtual en caso de Ecommerce.\n- `participant_name` *(string)*: Nombre del cliente.\n- `participant_email` *(string|null)*: Correo electr\u00f3nico del cliente.\n- `participant_ci` *(string)*: N\u00famero de carnet de identidad consultado.",
+                "summary": "Obtener Datos del Participante",
+                "tags": [
+                    "App"
+                ],
+                "parameters": [
+                    {
+                        "name": "ciNumber",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Participante obtenido con \u00e9xito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "examples": [
+                                        {
+                                            "process": true,
+                                            "message": "Participante obtenido con \u00e9xito.",
+                                            "data": {
+                                                "generate_participant_code": "b7e28938-1a52-4f1e-9276-32454a867b32",
+                                                "participant_link": "https://promociones.dismac.com.bo/participate/12345678",
+                                                "participant_name": "Juan P\u00e9rez",
+                                                "participant_email": "juan.perez@example.com",
+                                                "participant_ci": "12345678",
+                                                "total_attempts": 1,
+                                                "sphere_color": "Dorada",
+                                                "sphere_tier": "T3",
+                                                "is_ecommerce": true,
+                                                "message_promotion": "\u00a1Felicidades! Ganaste una Esfera Dorada (T3) en la promoci\u00f3n Dismac Navidad. Debes reventar tu globo virtual para descubrir tu premio."
+                                            },
+                                            "errors": []
+                                        }
+                                    ],
+                                    "properties": {
+                                        "process": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "generate_participant_code": {
+                                                    "type": "string",
+                                                    "description": "Identificador \u00fanico (UUID) asignado al participante registrado."
+                                                },
+                                                "participant_link": {
+                                                    "type": "string",
+                                                    "description": "Enlace web directo para que el participante ingrese a la ruleta/lavadora con su carnet."
+                                                },
+                                                "participant_name": {
+                                                    "type": "string",
+                                                    "description": "Nombre completo del participante registrado."
+                                                },
+                                                "participant_email": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Correo electr\u00f3nico del participante (puede ser null)."
+                                                },
+                                                "participant_ci": {
+                                                    "type": "string",
+                                                    "description": "Carnet o documento de identidad del participante."
+                                                },
+                                                "total_attempts": {
+                                                    "type": "integer",
+                                                    "description": "\ud83d\udfe2 [NUEVO] Cantidad de giros/intentos disponibles en la promoci\u00f3n Whirlpool (formularios en estado \"registered\")."
+                                                },
+                                                "sphere_color": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "sphere_tier": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "is_ecommerce": {
+                                                    "type": "boolean"
+                                                },
+                                                "message_promotion": {
+                                                    "type": "string",
+                                                    "description": "\ud83d\udfe2 [NUEVO] Mensaje promocional din\u00e1mico informativo indicando la cantidad de intentos generados o disponibles."
+                                                }
+                                            },
+                                            "required": [
+                                                "generate_participant_code",
+                                                "participant_link",
+                                                "participant_name",
+                                                "participant_email",
+                                                "participant_ci",
+                                                "total_attempts",
+                                                "sphere_color",
+                                                "sphere_tier",
+                                                "is_ecommerce",
+                                                "message_promotion"
+                                            ]
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "process",
+                                        "message",
+                                        "data",
+                                        "errors"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Participante no encontrado o error en la consulta",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "examples": [
+                                        {
+                                            "process": false,
+                                            "message": "Error al obtener el participante",
+                                            "errors": [
+                                                "El participante no se encuentra registrado."
+                                            ],
+                                            "data": []
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "API Key inv\u00e1lida",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "examples": [
+                                        {
+                                            "message": "Unauthorized: Invalid or missing API Key"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiKey": {
+                "type": "apiKey",
+                "description": "Clave secreta requerida para autenticar todas las solicitudes a la API. Solic\u00edtala al administrador.",
+                "in": "header",
+                "name": "X-API-KEY",
+                "x-default": "XXXXX"
+            }
+        },
+        "schemas": {
+            "RegisterParticipantRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "cellphone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "birth_date": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "ci_number": {
+                        "type": "string"
+                    },
+                    "business_unit": {
+                        "type": "string",
+                        "enum": [
+                            "ECO",
+                            "RET",
+                            "ACE"
+                        ]
+                    },
+                    "control_code": {
+                        "type": "string"
+                    },
+                    "ci_number_complement": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "sale_type": {
+                        "type": "string",
+                        "enum": [
+                            "CONTADO",
+                            "MINICUOTAS"
+                        ]
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "city_agency": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "total_amount": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "invoice_number": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "invoice_url": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "sale_date": {
+                        "type": "string"
+                    },
+                    "document_type": {
+                        "type": "string",
+                        "enum": [
+                            "CI",
+                            "NIT",
+                            "PE"
+                        ]
+                    },
+                    "sale_items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "code_brand": {
+                                    "type": "string"
+                                },
+                                "amount": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "name": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "quantity": {
+                                    "type": [
+                                        "integer",
+                                        "null"
+                                    ],
+                                    "minimum": 1
+                                },
+                                "category": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "code_category": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "code_brand",
+                                "amount"
+                            ]
+                        },
+                        "minItems": 1
+                    }
+                },
+                "required": [
+                    "name",
+                    "ci_number",
+                    "business_unit",
+                    "control_code",
+                    "sale_type",
+                    "city",
+                    "city_agency",
+                    "total_amount",
+                    "sale_date",
+                    "document_type",
+                    "sale_items"
+                ],
+                "title": "RegisterParticipantRequest"
+            }
+        }
+    }
+}
