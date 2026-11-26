@@ -22,7 +22,7 @@ class SendDailyReport extends Command
      *
      * @var string
      */
-    protected $description = 'Envía el reporte diario de formularios Whirlpool por email con los registros y stock a la fecha';
+    protected $description = 'Envía el reporte diario de formularios Dismac Navidad por email con los registros y stock a la fecha';
 
     /**
      * Execute the console command.

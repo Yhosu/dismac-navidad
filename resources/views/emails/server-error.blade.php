@@ -141,7 +141,7 @@
     <div class="container">
         <div class="header">
             <h1>🚨 Error 500 en la Aplicación</h1>
-            <div class="badge-env">{{ strtoupper($error['env']) }} &bull; {{ config('app.name', 'Whirlpool') }}</div>
+            <div class="badge-env">{{ strtoupper($error['env']) }} &bull; {{ config('app.name', 'Dismac Navidad') }}</div>
         </div>
 
         <div class="content">
@@ -197,7 +197,7 @@
         </div>
 
         <div class="footer">
-            Este es un correo automático generado por el fallback de excepciones de <b>{{ config('app.name', 'Whirlpool') }}</b> enviado a través de <b>Resend</b>.
+            Este es un correo automático generado por el fallback de excepciones de <b>{{ config('app.name', 'Dismac Navidad') }}</b> enviado a través de <b>Resend</b>.
         </div>
     </div>
 </body>

@@ -37,7 +37,7 @@ class FormResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Whirlpool';
+    protected static ?string $navigationGroup = 'Dismac Navidad';
 
     protected static ?string $navigationLabel = 'Formularios';
 
@@ -1008,10 +1008,9 @@ class FormResource extends Resource
         $greeting = $name ? "¡Hola {$name}!\n" : '';
         $code = $record->code ?? '';
 
-        $message = "{$greeting}¡Gracias por participar en Whirlpool Special Days!\n\n"
-            . "Te informamos que tu registro fue validado correctamente. A continuación, te enviamos tu código de participación para que puedas ingresarlo en el siguiente enlace y girar la ruleta.\n\n"
+        $message = "{$greeting}¡Gracias por participar en Dismac Navidad!\n\n"
+            . "Te informamos que tu registro fue validado correctamente. A continuación, te enviamos tu código de participación:\n\n"
             . "🔑Código de participación: {$code}\n\n"
-            . "🎡Link para girar la ruleta: https://promo.special-days.9lives.one/girar\n\n"
             . "¡Mucha suerte y gracias por participar!";
 
         return static::formatWhatsAppUrl($record->cellphone, $message);
@@ -1022,7 +1021,7 @@ class FormResource extends Resource
         $name = trim($record->name ?? '');
         $greeting = $name ? "¡Hola {$name}!\n" : '';
 
-        $message = "{$greeting}Gracias por participar en Whirlpool Special Days!\n\n"
+        $message = "{$greeting}¡Gracias por participar en Dismac Navidad!\n\n"
             . "Para realizar la transferencia de tu premio, envíanos tu QR o datos bancarios a tu nombre o los siguientes datos:\n\n"
             . "Banco:\n\n"
             . "Número de cuenta:\n\n"

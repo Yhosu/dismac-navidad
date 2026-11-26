@@ -17,7 +17,7 @@ class PrizeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
 
-    protected static ?string $navigationGroup = 'Whirlpool';
+    protected static ?string $navigationGroup = 'Dismac Navidad';
 
     protected static ?string $navigationLabel = 'Premios';
 
@@ -25,7 +25,12 @@ class PrizeResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Premios';
 
-    protected static bool $shouldRegisterNavigation = false;
+    protected static ?int $navigationSort = 5;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
 
     public static function form(Form $form): Form
     {
@@ -39,6 +44,9 @@ class PrizeResource extends Resource
                     ->label('Monto / Valor')
                     ->numeric()
                     ->prefix('Bs.'),
+                Forms\Components\Toggle::make('active')
+                    ->label('Activo (Disponible para entrega)')
+                    ->default(true),
                 Forms\Components\Textarea::make('description')
                     ->label('Descripción')
                     ->maxLength(65535)
@@ -58,6 +66,8 @@ class PrizeResource extends Resource
                     ->label('Monto')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\ToggleColumn::make('active')
+                    ->label('Activo'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Creado el')
                     ->dateTime()

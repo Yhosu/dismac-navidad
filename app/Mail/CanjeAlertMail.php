@@ -30,8 +30,8 @@ class CanjeAlertMail extends Mailable
 
         return new Envelope(
             from: new Address(
-                config('mail.from.address', 'noreply@whirlpool.bo'),
-                config('mail.from.name', 'Promo Whirlpool')
+                config('mail.from.address', 'noreply@dismac.com.bo'),
+                config('mail.from.name', 'Dismac Navidad')
             ),
             subject: "🎁 [CANJE {$canal}] Premio Bs. {$premioAmount} - {$this->form->name}",
         );

@@ -28,12 +28,12 @@ class AdminPanelProvider extends PanelProvider
             ->login(Login::class)
             ->darkMode(condition: true, isForced: true)
             ->colors([
-                'primary' => Color::hex('#E22319'), // Whirlpool Red
+                'primary' => Color::hex('#E22319'), // Dismac Red
                 'purple' => Color::Purple,
                 'violet' => Color::Violet,
             ])
             ->sidebarCollapsibleOnDesktop()
-            ->brandName('Whirlpool Special Days - Dismac')
+            ->brandName('Dismac Navidad')
             ->brandLogoHeight('3rem')
             ->favicon(fn (): string => (string) asset('assets/logo-dismac.png'))
             ->brandLogo(fn (): string => (string) asset('assets/logo-dismac.png'))

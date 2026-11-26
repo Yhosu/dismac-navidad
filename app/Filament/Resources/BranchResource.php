@@ -17,7 +17,7 @@ class BranchResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static ?string $navigationGroup = 'Whirlpool';
+    protected static ?string $navigationGroup = 'Dismac Navidad';
 
     protected static ?string $navigationLabel = 'Sucursales';
 
@@ -25,7 +25,12 @@ class BranchResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Sucursales';
 
-    protected static bool $shouldRegisterNavigation = false;
+    protected static ?int $navigationSort = 6;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
 
     public static function form(Form $form): Form
     {

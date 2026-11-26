@@ -50,8 +50,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Scramble::afterOpenApiGenerated(function (OpenApi $openApi) {
-            $openApi->info->title = 'Promo Whirlpool API Docs';
-            $openApi->info->description = 'Documentación oficial de la API REST para la promoción WHIRLPOOL SPECIAL DAYS.';
+            $openApi->info->title = 'Dismac Navidad API Docs';
+            $openApi->info->description = 'Documentación oficial de la API REST para la promoción Dismac Navidad.';
 
             $scheme = new class('header', 'X-API-KEY') extends ApiKeySecurityScheme
             {
@@ -69,12 +69,15 @@ class AppServiceProvider extends ServiceProvider
 
             $fieldDescriptions = [
                 'generate_participant_code' => 'Identificador único (UUID) asignado al participante registrado.',
-                'participant_link' => 'Enlace web directo para que el participante ingrese a la ruleta/lavadora con su carnet.',
+                'participant_link' => 'Enlace web directo para que el participante Ecommerce ingrese a reventar su globo virtual con su carnet.',
                 'participant_name' => 'Nombre completo del participante registrado.',
                 'participant_email' => 'Correo electrónico del participante (puede ser null).',
                 'participant_ci' => 'Carnet o documento de identidad del participante.',
-                'total_attempts' => '🟢 [NUEVO] Cantidad de giros/intentos disponibles en la promoción Whirlpool (formularios en estado "registered").',
-                'message_promotion' => '🟢 [NUEVO] Mensaje promocional dinámico informativo indicando la cantidad de intentos generados o disponibles.',
+                'total_attempts' => 'Cantidad de participaciones disponibles en la promoción Dismac Navidad (formularios en estado "registered").',
+                'sphere_color' => 'Color de la esfera ganada según el rango de compra (Roja, Plateada o Dorada).',
+                'sphere_tier' => 'Nivel de la esfera ganada (T1, T2 o T3).',
+                'is_ecommerce' => 'Indica si la compra corresponde al canal Ecommerce (ECO).',
+                'message_promotion' => 'Mensaje promocional dinámico informativo indicando el color de esfera ganado e instrucción (globo virtual en Ecommerce o POS físico).',
             ];
             
 

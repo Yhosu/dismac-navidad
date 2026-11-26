@@ -24,8 +24,8 @@ class DailyReportMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(config('mail.from.address'), config('mail.from.name', 'Promo Whirlpool')),
-            subject: 'Reporte Diario Whirlpool - '.$this->dateStart,
+            from: new Address(config('mail.from.address'), config('mail.from.name', 'Dismac Navidad')),
+            subject: 'Reporte Diario Dismac Navidad - '.$this->dateStart,
         );
     }
 

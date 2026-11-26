@@ -13,12 +13,12 @@ class PrizeAndBranchSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Crear Sucursales
+        // 1. Crear Sucursal Ecommerce Central
         $centralDismac = Branch::where('channel', 'ECOMMERCE')->first();
         if (! $centralDismac) {
             $centralDismac = Branch::create([
                 'id' => (string) Str::uuid(),
-                'name' => 'Central Dismac',
+                'name' => 'Central Dismac Ecommerce',
                 'channel' => 'ECOMMERCE',
                 'city' => 'Nacional',
                 'address' => 'Central Dismac',
@@ -27,62 +27,75 @@ class PrizeAndBranchSeeder extends Seeder
             $centralDismac->update(['city' => 'Nacional']);
         }
 
-        $cashbackMayoristas = Branch::where('channel', 'MAYORISTA')->first();
-        if (! $cashbackMayoristas) {
-            $cashbackMayoristas = Branch::create([
-                'id' => (string) Str::uuid(),
-                'name' => 'CashBack Mayoristas',
-                'channel' => 'MAYORISTA',
-                'city' => 'Nacional',
-                'address' => 'CashBack Mayoristas',
-            ]);
-        } else {
-            $cashbackMayoristas->update(['city' => 'Nacional']);
+        // Eliminar sucursal legado CashBack Mayoristas si no tiene formularios asociados
+        $legacyMayorista = Branch::where('name', 'CashBack Mayoristas')->first();
+        if ($legacyMayorista && \App\Models\Form::where('branch_id', $legacyMayorista->id)->doesntExist()) {
+            PrizeStockHistory::where('branch_id', $legacyMayorista->id)->delete();
+            PrizeBranch::where('branch_id', $legacyMayorista->id)->delete();
+            $legacyMayorista->delete();
         }
 
-        // 2. Definición de Premios y Stocks
+        // 2. Definición de Premios y Stock por defecto (100 unidades por premio)
         $prizesData = [
+            [
+                'name' => 'Premio 10000 Bs',
+                'amount' => 10000.00,
+                'description' => 'Vale / Premio de 10000 Bs',
+                'stock_ecommerce' => 100,
+            ],
+            [
+                'name' => 'Premio 5000 Bs',
+                'amount' => 5000.00,
+                'description' => 'Vale / Premio de 5000 Bs',
+                'stock_ecommerce' => 100,
+            ],
             [
                 'name' => 'Premio 3000 Bs',
                 'amount' => 3000.00,
-                'description' => 'Premio en efectivo / voucher de 3000 Bs',
-                'stock_ecommerce' => 7,
-                'stock_mayorista' => 3,
+                'description' => 'Vale / Premio de 3000 Bs',
+                'stock_ecommerce' => 100,
             ],
             [
                 'name' => 'Premio 2000 Bs',
                 'amount' => 2000.00,
-                'description' => 'Premio en efectivo / voucher de 2000 Bs',
-                'stock_ecommerce' => 7,
-                'stock_mayorista' => 3,
+                'description' => 'Vale / Premio de 2000 Bs',
+                'stock_ecommerce' => 100,
             ],
             [
                 'name' => 'Premio 1000 Bs',
                 'amount' => 1000.00,
-                'description' => 'Premio en efectivo / voucher de 1000 Bs',
-                'stock_ecommerce' => 15,
-                'stock_mayorista' => 5,
+                'description' => 'Vale / Premio de 1000 Bs',
+                'stock_ecommerce' => 100,
             ],
             [
                 'name' => 'Premio 500 Bs',
                 'amount' => 500.00,
-                'description' => 'Premio en efectivo / voucher de 500 Bs',
-                'stock_ecommerce' => 14,
-                'stock_mayorista' => 6,
+                'description' => 'Vale / Premio de 500 Bs',
+                'stock_ecommerce' => 100,
             ],
             [
                 'name' => 'Premio 250 Bs',
                 'amount' => 250.00,
-                'description' => 'Premio en efectivo / voucher de 250 Bs',
-                'stock_ecommerce' => 75,
-                'stock_mayorista' => 15,
+                'description' => 'Vale / Premio de 250 Bs',
+                'stock_ecommerce' => 100,
+            ],
+            [
+                'name' => 'Premio 200 Bs',
+                'amount' => 200.00,
+                'description' => 'Vale / Premio de 200 Bs',
+                'stock_ecommerce' => 100,
             ],
             [
                 'name' => 'Premio 100 Bs',
                 'amount' => 100.00,
-                'description' => 'Premio en efectivo / voucher de 100 Bs',
-                'stock_ecommerce' => 170,
-                'stock_mayorista' => 30,
+                'description' => 'Vale / Premio de 100 Bs',
+                'stock_ecommerce' => 100,
+            ],
+            [
+                'name' => 'Premio 50 Bs',
+                'amount' => 50.00,
+                'description' => 'Vale / Premio de 50 Bs',
+                'stock_ecommerce' => 100,
             ],
         ];
 
@@ -120,30 +133,6 @@ class PrizeAndBranchSeeder extends Seeder
                 ]);
                 $ecoStock->stock = $data['stock_ecommerce'];
                 $ecoStock->save();
-            }
-
-            // Stock CashBack Mayoristas (MAYORISTA)
-            $historyMay = PrizeStockHistory::where('prize_id', $prize->id)
-                ->where('branch_id', $cashbackMayoristas->id)
-                ->where('description', 'Carga inicial de stock - CashBack Mayoristas (MAYORISTA)')
-                ->first();
-
-            if (! $historyMay) {
-                PrizeStockHistory::create([
-                    'id' => (string) Str::uuid(),
-                    'prize_id' => $prize->id,
-                    'branch_id' => $cashbackMayoristas->id,
-                    'quantity' => $data['stock_mayorista'],
-                    'type' => 'addition',
-                    'description' => 'Carga inicial de stock - CashBack Mayoristas (MAYORISTA)',
-                ]);
-
-                $mayStock = PrizeBranch::firstOrCreate([
-                    'prize_id' => $prize->id,
-                    'branch_id' => $cashbackMayoristas->id,
-                ]);
-                $mayStock->stock = $data['stock_mayorista'];
-                $mayStock->save();
             }
         }
     }

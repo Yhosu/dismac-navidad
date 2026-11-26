@@ -1,9 +1,9 @@
 {
     "openapi": "3.1.0",
     "info": {
-        "title": "Promo Whirlpool API Docs",
+        "title": "Dismac Navidad API Docs",
         "version": "0.0.1",
-        "description": "Documentaci\u00f3n oficial de la API REST para la promoci\u00f3n WHIRLPOOL SPECIAL DAYS."
+        "description": "Documentaci\u00f3n oficial de la API REST para la promoci\u00f3n Dismac Navidad."
     },
     "servers": [
         {
@@ -93,7 +93,7 @@
                                                 },
                                                 "participant_link": {
                                                     "type": "string",
-                                                    "description": "Enlace web directo para que el participante ingrese a la ruleta/lavadora con su carnet."
+                                                    "description": "Enlace web directo para que el participante Ecommerce ingrese a reventar su globo virtual con su carnet."
                                                 },
                                                 "participant_name": {
                                                     "type": "string",
@@ -112,26 +112,29 @@
                                                 },
                                                 "total_attempts": {
                                                     "type": "integer",
-                                                    "description": "\ud83d\udfe2 [NUEVO] Cantidad de giros/intentos disponibles en la promoci\u00f3n Whirlpool (formularios en estado \"registered\")."
+                                                    "description": "Cantidad de participaciones disponibles en la promoci\u00f3n Dismac Navidad (formularios en estado \"registered\")."
                                                 },
                                                 "sphere_color": {
                                                     "type": [
                                                         "string",
                                                         "null"
-                                                    ]
+                                                    ],
+                                                    "description": "Color de la esfera ganada seg\u00fan el rango de compra (Roja, Plateada o Dorada)."
                                                 },
                                                 "sphere_tier": {
                                                     "type": [
                                                         "string",
                                                         "null"
-                                                    ]
+                                                    ],
+                                                    "description": "Nivel de la esfera ganada (T1, T2 o T3)."
                                                 },
                                                 "is_ecommerce": {
-                                                    "type": "boolean"
+                                                    "type": "boolean",
+                                                    "description": "Indica si la compra corresponde al canal Ecommerce (ECO)."
                                                 },
                                                 "message_promotion": {
                                                     "type": "string",
-                                                    "description": "\ud83d\udfe2 [NUEVO] Mensaje promocional din\u00e1mico informativo indicando la cantidad de intentos generados o disponibles."
+                                                    "description": "Mensaje promocional din\u00e1mico informativo indicando el color de esfera ganado e instrucci\u00f3n (globo virtual en Ecommerce o POS f\u00edsico)."
                                                 }
                                             },
                                             "required": [
@@ -303,7 +306,7 @@
                                                 },
                                                 "participant_link": {
                                                     "type": "string",
-                                                    "description": "Enlace web directo para que el participante ingrese a la ruleta/lavadora con su carnet."
+                                                    "description": "Enlace web directo para que el participante Ecommerce ingrese a reventar su globo virtual con su carnet."
                                                 },
                                                 "participant_name": {
                                                     "type": "string",
@@ -322,26 +325,29 @@
                                                 },
                                                 "total_attempts": {
                                                     "type": "integer",
-                                                    "description": "\ud83d\udfe2 [NUEVO] Cantidad de giros/intentos disponibles en la promoci\u00f3n Whirlpool (formularios en estado \"registered\")."
+                                                    "description": "Cantidad de participaciones disponibles en la promoci\u00f3n Dismac Navidad (formularios en estado \"registered\")."
                                                 },
                                                 "sphere_color": {
                                                     "type": [
                                                         "string",
                                                         "null"
-                                                    ]
+                                                    ],
+                                                    "description": "Color de la esfera ganada seg\u00fan el rango de compra (Roja, Plateada o Dorada)."
                                                 },
                                                 "sphere_tier": {
                                                     "type": [
                                                         "string",
                                                         "null"
-                                                    ]
+                                                    ],
+                                                    "description": "Nivel de la esfera ganada (T1, T2 o T3)."
                                                 },
                                                 "is_ecommerce": {
-                                                    "type": "boolean"
+                                                    "type": "boolean",
+                                                    "description": "Indica si la compra corresponde al canal Ecommerce (ECO)."
                                                 },
                                                 "message_promotion": {
                                                     "type": "string",
-                                                    "description": "\ud83d\udfe2 [NUEVO] Mensaje promocional din\u00e1mico informativo indicando la cantidad de intentos generados o disponibles."
+                                                    "description": "Mensaje promocional din\u00e1mico informativo indicando el color de esfera ganado e instrucci\u00f3n (globo virtual en Ecommerce o POS f\u00edsico)."
                                                 }
                                             },
                                             "required": [

@@ -19,7 +19,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 
 class Dashboard extends BaseDashboard
 {
-    protected static ?string $title = 'Dashboard Whirlpool';
+    protected static ?string $title = 'Dashboard Dismac Navidad';
 
     protected static ?string $navigationLabel = 'Dashboard';
 
@@ -145,7 +145,7 @@ class Dashboard extends BaseDashboard
                             ];
                         });
 
-                    return (new FastExcel($forms))->download('Reporte_Whirlpool_Formularios_'.now()->format('Ymd_His').'.xlsx');
+                    return (new FastExcel($forms))->download('Reporte_Dismac_Navidad_Formularios_'.now()->format('Ymd_His').'.xlsx');
                 }),
         ];
     }

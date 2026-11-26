@@ -27,12 +27,12 @@ class ServerErrorMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        $appName = config('app.name', 'Whirlpool');
+        $appName = config('app.name', 'Dismac Navidad');
         $messageSnippet = $this->errorData['message_short'] ?? 'Error no especificado';
 
         return new Envelope(
             from: new Address(
-                config('mail.from.address', 'whirlpool@contact.9lives.one'),
+                config('mail.from.address', 'noreply@dismac.com.bo'),
                 config('mail.from.name', $appName)
             ),
             subject: "🚨 [{$appName} - 500] {$messageSnippet}",

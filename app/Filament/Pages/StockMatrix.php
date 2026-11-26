@@ -21,7 +21,7 @@ class StockMatrix extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-table-cells';
 
-    protected static ?string $navigationGroup = 'Whirlpool';
+    protected static ?string $navigationGroup = 'Dismac Navidad';
 
     protected static ?string $navigationLabel = 'Matriz de Stock';
 

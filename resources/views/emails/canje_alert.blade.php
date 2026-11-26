@@ -158,7 +158,7 @@
     <div class="container">
         <!-- HEADER -->
         <div class="header">
-            <h1>WHIRLPOOL SPECIAL DAYS</h1>
+            <h1>DISMAC NAVIDAD</h1>
             <p>Notificación en Tiempo Real de Canje de Premio</p>
         </div>
 
@@ -251,7 +251,7 @@
         </div>
 
         <div class="footer">
-            Whirlpool Bolivia &bull; Notificación Automática Generada por el Sistema
+            Dismac Bolivia &bull; Notificación Automática Generada por el Sistema
         </div>
     </div>
 </body>

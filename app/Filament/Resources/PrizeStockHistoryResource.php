@@ -30,7 +30,7 @@ class PrizeStockHistoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clock';
 
-    protected static ?string $navigationGroup = 'Whirlpool';
+    protected static ?string $navigationGroup = 'Dismac Navidad';
 
     protected static ?string $navigationLabel = 'Historial de Stock';
 

@@ -22,7 +22,7 @@ class SaleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
-    protected static ?string $navigationGroup = 'Whirlpool';
+    protected static ?string $navigationGroup = 'Dismac Navidad';
 
     protected static ?string $navigationLabel = 'Ventas';
 
@@ -95,14 +95,7 @@ class SaleResource extends Resource
                         Forms\Components\TextInput::make('name_brand')
                             ->label('Marca')
                             ->disabled()
-                            ->formatStateUsing(function ($state, Get $get) {
-                                $code = (string) $get('code_brand');
-                                if ($code === '2' || $code === '15') {
-                                    return 'WHIRLPOOL';
-                                }
-
-                                return $state ?: 'WHIRLPOOL';
-                            }),
+                            ->formatStateUsing(fn ($state) => $state ?: '-'),
                         Forms\Components\TextInput::make('code_brand')
                             ->label('Cod. Marca')
                             ->disabled(),

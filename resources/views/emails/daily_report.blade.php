@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte Diario - Whirlpool</title>
+    <title>Reporte Diario - Dismac Navidad</title>
 </head>
 
 <body
@@ -24,9 +24,9 @@
                                 style="height: auto; max-height: 140px; display: block; margin-bottom: 15px;">
                             <h1
                                 style="color: #111827; font-size: 24px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">
-                                Reporte Diario Whirlpool</h1>
+                                Reporte Diario Dismac Navidad</h1>
                             <p style="color: #6b7280; font-size: 15px; margin: 8px 0 0 0; font-weight: 500;">
-                                PROMOCIÓN WHIRLPOOL
+                                PROMOCIÓN DISMAC NAVIDAD
                             </p>
                         </td>
                     </tr>
@@ -37,7 +37,7 @@
                             <p style="color: #374151; font-size: 16px; line-height: 24px; margin: 0 0 20px 0;">Hola
                                 Equipo,</p>
                             <p style="color: #4b5563; font-size: 15px; line-height: 24px; margin: 0 0 30px 0;">
-                                Adjunto encontrarán el reporte diario de formularios de **Whirlpool** correspondiente al siguiente periodo:
+                                Adjunto encontrarán el reporte diario de formularios de <strong>Dismac Navidad</strong> correspondiente al siguiente periodo:
                             </p>
 
                             <!-- Date Range Card -->
@@ -221,7 +221,7 @@
                             <p
                                 style="color: #6b7280; font-size: 15px; margin: 30px 0 0 0; border-top: 1px solid #e5e7eb; padding-top: 20px;">
                                 Saludos cordiales,<br>
-                                <strong style="color: #111827;">Equipo Whirlpool</strong><br>
+                                <strong style="color: #111827;">Equipo Dismac Navidad</strong><br>
                                 <span style="font-size: 13px;">Sistema Automático de Reportería</span>
                             </p>
                         </td>
@@ -234,7 +234,7 @@
                     <tr>
                         <td align="center">
                             <p style="color: #9ca3af; font-size: 12px; margin: 0; line-height: 18px;">
-                                © {{ date('Y') }} Whirlpool. Todos los derechos reservados.<br>
+                                © {{ date('Y') }} Dismac. Todos los derechos reservados.<br>
                                 Este es un correo del sistema generado automáticamente. Por favor no responder a esta
                                 dirección.
                             </p>
